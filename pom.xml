@@ -54,7 +54,7 @@
 	</dependencies>
 	
 	<properties>
- 		<eap-bom.version>6.3.0</eap-bom.version>
+ 		<eap-bom.version>6.3.1</eap-bom.version>
 	</properties>
 
 </project>
