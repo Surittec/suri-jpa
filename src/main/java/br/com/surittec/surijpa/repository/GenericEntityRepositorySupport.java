@@ -37,7 +37,7 @@ import br.com.surittec.surijpa.util.EntityUtil;
  * {@link javax.persistence.EntityManager} e provendo algumas operações
  * necessárias manter ou pesquisar entidades.
  */
-public abstract class GenericEntityRepository {
+public abstract class GenericEntityRepositorySupport {
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// PROTECTED METHODS
@@ -148,7 +148,7 @@ public abstract class GenericEntityRepository {
 	}
 
 	/**
-	 * Same as {@link EntityRepository#refresh(Object)} but returns the entity.
+	 * Same as {@link EntityRepositorySupport#refresh(Object)} but returns the entity.
 	 * 
 	 * @param entity
 	 *            Entity to refresh.
@@ -172,7 +172,7 @@ public abstract class GenericEntityRepository {
 	}
 
 	/**
-	 * Same as {@link EntityRepository#refresh(Collection)} but returns the
+	 * Same as {@link EntityRepositorySupport#refresh(Collection)} but returns the
 	 * collection.
 	 * 
 	 * @param entities
@@ -215,7 +215,7 @@ public abstract class GenericEntityRepository {
 	}
 
 	/**
-	 * Same as {@link EntityRepository#detach(Object)} but returns the entity.
+	 * Same as {@link EntityRepositorySupport#detach(Object)} but returns the entity.
 	 * 
 	 * @param entity
 	 * @return the entity detached
@@ -243,7 +243,7 @@ public abstract class GenericEntityRepository {
 	}
 
 	/**
-	 * Same as {@link EntityRepository#detach(Collection)} but returns the
+	 * Same as {@link EntityRepositorySupport#detach(Collection)} but returns the
 	 * collection.
 	 * 
 	 * @param entities

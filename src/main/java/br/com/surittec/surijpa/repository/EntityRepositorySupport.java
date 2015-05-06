@@ -40,7 +40,7 @@ import br.com.surittec.surijpa.util.EntityUtil;
  * necessárias manter ou pesquisar entidades.
  */
 @SuppressWarnings("unchecked")
-public abstract class EntityRepository<E, PK extends Serializable> {
+public abstract class EntityRepositorySupport<E, PK extends Serializable> {
 
 	protected Class<E> type;
 
@@ -51,7 +51,7 @@ public abstract class EntityRepository<E, PK extends Serializable> {
 	/**
 	 * Construtor que ja obtem de forma automatica o tipo do Repository.
 	 */
-	public EntityRepository() {
+	public EntityRepositorySupport() {
 		Type superclass = getClass().getGenericSuperclass();
 		if (superclass instanceof ParameterizedType) {
 			ParameterizedType parameterizedType = (ParameterizedType) superclass;
@@ -170,7 +170,7 @@ public abstract class EntityRepository<E, PK extends Serializable> {
 	}
 
 	/**
-	 * Same as {@link EntityRepository#refresh(Object)} but returns the entity.
+	 * Same as {@link EntityRepositorySupport#refresh(Object)} but returns the entity.
 	 * 
 	 * @param entity
 	 *            Entity to refresh.
@@ -194,7 +194,7 @@ public abstract class EntityRepository<E, PK extends Serializable> {
 	}
 
 	/**
-	 * Same as {@link EntityRepository#refresh(Collection)} but returns the
+	 * Same as {@link EntityRepositorySupport#refresh(Collection)} but returns the
 	 * collection.
 	 * 
 	 * @param entities
@@ -237,7 +237,7 @@ public abstract class EntityRepository<E, PK extends Serializable> {
 	}
 
 	/**
-	 * Same as {@link EntityRepository#detach(Object)} but returns the entity.
+	 * Same as {@link EntityRepositorySupport#detach(Object)} but returns the entity.
 	 * 
 	 * @param entity
 	 * @return the entity detached
@@ -265,7 +265,7 @@ public abstract class EntityRepository<E, PK extends Serializable> {
 	}
 
 	/**
-	 * Same as {@link EntityRepository#detach(Collection)} but returns the
+	 * Same as {@link EntityRepositorySupport#detach(Collection)} but returns the
 	 * collection.
 	 * 
 	 * @param entities
