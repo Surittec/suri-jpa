@@ -21,6 +21,10 @@
 package br.com.surittec.surijpa.repository;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Member;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -29,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.TypedQuery;
 
 import br.com.surittec.surijpa.criteria.JPQL;
@@ -296,6 +301,55 @@ public abstract class EntityRepositorySupport<E, PK extends Serializable> {
 	 */
 	public E findBy(PK primaryKey) {
 		return getEntityManager().find(type, primaryKey);
+	}
+	
+	/**
+	 * Entity lookup by primary key. Convenicence method around
+	 * {@link javax.persistence.EntityManager#find(Class, Object)} and check 
+	 * if version parameter is equal to persistent version.
+	 * 
+	 * @param primaryKey
+	 *            DB primary key.
+	 * @param version
+	 * @return Entity identified by primary or null if it does not exist.
+	 */
+	public E findByAndCheckVersion(PK primaryKey, Object version) {
+		return findByAndCheckVersion(primaryKey, version, Integer.class);
+	}
+	
+	/**
+	 * Entity lookup by primary key. Convenicence method around
+	 * {@link javax.persistence.EntityManager#find(Class, Object)} and check 
+	 * if version parameter is equal to persistent version.
+	 * 
+	 * @param primaryKey
+	 *            DB primary key.
+	 * @param version
+	 * @param versionType
+	 * @return Entity identified by primary or null if it does not exist.
+	 */
+	public E findByAndCheckVersion(PK primaryKey, Object version, Class<?> versionType) {
+		E entity = findBy(primaryKey);
+		if(entity != null){
+			Member member = getEntityManager().getMetamodel().entity(type).getVersion(versionType).getJavaMember();
+			Object persistentVersion = null;
+			try{
+				if(member instanceof Field){
+					Field versionField = (Field) member;
+					versionField.setAccessible(true);
+					persistentVersion = versionField.get(entity);
+				}else{
+					Method versionMethod = (Method) member;
+					persistentVersion = versionMethod.invoke(entity);
+				}
+				if(!persistentVersion.equals(version)){
+					throw new OptimisticLockException(entity);
+				}
+			}catch(IllegalAccessException | InvocationTargetException e){
+				throw new RuntimeException(e);
+			}
+		}
+		return entity;
 	}
 
 	/**
