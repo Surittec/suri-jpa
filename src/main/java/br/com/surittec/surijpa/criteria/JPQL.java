@@ -112,21 +112,109 @@ public class JPQL {
 	/**
 	 * Alias para o método from()
 	 * 
-	 * @param join
+	 * @param joins
 	 * @return
 	 */
-	public JPQL join(String... join) {
-		return from(join);
+	public JPQL join(String... joins) {
+		return from(joins);
 	}
 
 	/**
 	 * Alias para o método from()
 	 * 
-	 * @param join
+	 * @param joins
 	 * @return
 	 */
 	public JPQL join(Collection<String> joins) {
 		return from(joins);
+	}
+
+	/**
+	 * Alias para o método from()
+	 * 
+	 * @param joins
+	 * @return
+	 */
+	public JPQL innerJoin(String... joins) {
+		return join(true, false, Arrays.asList(joins));
+	}
+
+	/**
+	 * Alias para o método from()
+	 * 
+	 * @param joins
+	 * @return
+	 */
+	public JPQL innerJoin(Collection<String> joins) {
+		return join(true, false, joins);
+	}
+
+	/**
+	 * Alias para o método from()
+	 * 
+	 * @param joins
+	 * @return
+	 */
+	public JPQL innerJoinFetch(String... joins) {
+		return join(true, true, Arrays.asList(joins));
+	}
+
+	/**
+	 * Alias para o método from()
+	 * 
+	 * @param joins
+	 * @return
+	 */
+	public JPQL innerJoinFetch(Collection<String> joins) {
+		return join(true, true, joins);
+	}
+
+	/**
+	 * Alias para o método from()
+	 * 
+	 * @param joins
+	 * @return
+	 */
+	public JPQL leftJoin(String... joins) {
+		return join(false, false, Arrays.asList(joins));
+	}
+
+	/**
+	 * Alias para o método from()
+	 * 
+	 * @param joins
+	 * @return
+	 */
+	public JPQL leftJoin(Collection<String> joins) {
+		return join(false, false, joins);
+	}
+
+	/**
+	 * Alias para o método from()
+	 * 
+	 * @param joins
+	 * @return
+	 */
+	public JPQL leftJoinFetch(String... joins) {
+		return join(false, true, Arrays.asList(joins));
+	}
+
+	/**
+	 * Alias para o método from()
+	 * 
+	 * @param joins
+	 * @return
+	 */
+	public JPQL leftJoinFetch(Collection<String> joins) {
+		return join(false, true, joins);
+	}
+
+	private JPQL join(boolean inner, boolean fetch, Collection<String> joins) {
+		List<String> list = new ArrayList<String>();
+		for (String join : joins) {
+			list.add(String.format("%s join %s %s", inner ? "inner" : "left", fetch ? "fetch" : "", join));
+		}
+		return from(list);
 	}
 
 	/**
