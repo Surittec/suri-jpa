@@ -168,6 +168,26 @@ public class JPQL {
 	public JPQL innerJoinFetch(Collection<String> joins) {
 		return join(true, true, joins);
 	}
+	
+	/**
+	 * Alias para o método from()
+	 * 
+	 * @param joins
+	 * @return
+	 */
+	public JPQL innerJoin(boolean fetch, String... joins) {
+		return join(true, fetch, Arrays.asList(joins));
+	}
+
+	/**
+	 * Alias para o método from()
+	 * 
+	 * @param joins
+	 * @return
+	 */
+	public JPQL innerJoin(boolean fetch, Collection<String> joins) {
+		return join(true, fetch, joins);
+	}
 
 	/**
 	 * Alias para o método from()
@@ -208,13 +228,25 @@ public class JPQL {
 	public JPQL leftJoinFetch(Collection<String> joins) {
 		return join(false, true, joins);
 	}
+	
+	/**
+	 * Alias para o método from()
+	 * 
+	 * @param joins
+	 * @return
+	 */
+	public JPQL leftJoin(boolean fetch, String... joins) {
+		return join(false, fetch, Arrays.asList(joins));
+	}
 
-	private JPQL join(boolean inner, boolean fetch, Collection<String> joins) {
-		List<String> list = new ArrayList<String>();
-		for (String join : joins) {
-			list.add(String.format("%s join %s %s", inner ? "inner" : "left", fetch ? "fetch" : "", join));
-		}
-		return from(list);
+	/**
+	 * Alias para o método from()
+	 * 
+	 * @param joins
+	 * @return
+	 */
+	public JPQL leftJoin(boolean fetch, Collection<String> joins) {
+		return join(false, fetch, joins);
 	}
 
 	/**
@@ -443,6 +475,14 @@ public class JPQL {
 	// PRIVATE
 	// ----------------------------------------------------------------------------
 
+	private JPQL join(boolean inner, boolean fetch, Collection<String> joins) {
+		List<String> list = new ArrayList<String>();
+		for (String join : joins) {
+			list.add(String.format("%s join %s %s", inner ? "inner" : "left", fetch ? "fetch" : "", join));
+		}
+		return from(list);
+	}
+	
 	private Query getQuery() {
 		Query query = entityManager.createQuery(this.toString());
 
