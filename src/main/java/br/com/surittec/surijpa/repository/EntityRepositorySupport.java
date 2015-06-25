@@ -313,7 +313,7 @@ public abstract class EntityRepositorySupport<E, PK extends Serializable> {
 	 * @param version
 	 * @return Entity identified by primary or null if it does not exist.
 	 */
-	public E findByAndCheckVersion(PK primaryKey, Object version) {
+	public E findByAndCheckVersion(PK primaryKey, Integer version) {
 		return findByAndCheckVersion(primaryKey, version, Integer.class);
 	}
 	
@@ -330,6 +330,28 @@ public abstract class EntityRepositorySupport<E, PK extends Serializable> {
 	 */
 	public E findByAndCheckVersion(PK primaryKey, Object version, Class<?> versionType) {
 		E entity = findBy(primaryKey);
+		checkVersion(entity, version, versionType);
+		return entity;
+	}
+
+	/**
+	 * Checks if version parameter is equal to persistent version.
+	 * 
+	 * @param entity
+	 * @param version
+	 */
+	protected void checkVersion(E entity, Integer version){
+		checkVersion(entity, version, Integer.class);
+	}
+	
+	/**
+	 * Checks if version parameter is equal to persistent version.
+	 * 
+	 * @param entity
+	 * @param version
+	 * @param versionType
+	 */
+	protected void checkVersion(E entity, Object version, Class<?> versionType){
 		if(entity != null){
 			Member member = getEntityManager().getMetamodel().entity(type).getVersion(versionType).getJavaMember();
 			Object persistentVersion = null;
@@ -349,9 +371,8 @@ public abstract class EntityRepositorySupport<E, PK extends Serializable> {
 				throw new RuntimeException(e);
 			}
 		}
-		return entity;
 	}
-
+	
 	/**
 	 * Lookup all existing entities of entity class {@code <E>}.
 	 * 
