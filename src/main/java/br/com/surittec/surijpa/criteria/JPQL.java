@@ -44,6 +44,7 @@ public class JPQL {
 	private List<String> where;
 	private Map<String, Object> params;
 	private List<String> group;
+	private List<String> having;
 	private List<String> order;
 
 	private Integer firstResult;
@@ -60,6 +61,7 @@ public class JPQL {
 		this.where = new ArrayList<String>();
 		this.params = new HashMap<String, Object>();
 		this.group = new ArrayList<String>();
+		this.having = new ArrayList<String>();
 		this.order = new ArrayList<String>();
 	}
 
@@ -342,6 +344,27 @@ public class JPQL {
 		this.group.addAll(groups);
 		return this;
 	}
+	
+	/**
+	 * Inclui cláusulas HAVING para as queries.
+	 * 
+	 * @param having
+	 * @return
+	 */
+	public JPQL having(String... having) {
+		return having(Arrays.asList(having));
+	}
+	
+	/**
+	 * Inclui cláusulas HAVING para as queries.
+	 * 
+	 * @param group
+	 * @return
+	 */
+	public JPQL having(Collection<String> havings) {
+		this.having.addAll(havings);
+		return this;
+	}
 
 	/**
 	 * Inclui cláusulas ORDER BY para as queries.
@@ -465,6 +488,8 @@ public class JPQL {
 			append(query, "where", where, "and");
 		if (!group.isEmpty())
 			append(query, "group by", group, ",");
+		if (!having.isEmpty())
+			append(query, "having", having, ",");
 		if (!order.isEmpty())
 			append(query, "order by", order, ",");
 
