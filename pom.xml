@@ -10,7 +10,7 @@
 	</parent>
 	
 	<artifactId>suri-jpa</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>Suri JPA</name>
@@ -54,7 +54,7 @@
 	</dependencies>
 	
 	<properties>
- 		<eap-bom.version>6.3.2</eap-bom.version>
+ 		<eap-bom.version>6.4.0</eap-bom.version>
 	</properties>
 
 </project>
